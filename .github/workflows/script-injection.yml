@@ -8,9 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Assign label
+        # you can use an action will be safer than a run command
+        # using an env variable solves theissue as it is evaluated outside the command shell,it recomended to store in env variable any user input
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        #   issue_title="${{ github.event.issue.title }}" -> this line causes the injection
         run: |
-          issue_title="${{ github.event.issue.title }}"
-          if [[ "$issue_title" == *"bug"* ]]; then
+
+          if [[ "$TITLE" == *"bug"* ]]; then
           echo "Issue is about a bug!"
           else
           echo "Issue is not about a bug"
